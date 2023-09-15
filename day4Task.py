@@ -95,12 +95,13 @@ def AskString():
 # def task2_3():
 #     print("task 3\n")
 #     for i in range(-30,31):
-#         if i%3 == 0:
-#             print(f"{i}Fizz")
+#         if i%3 == 0 and i%5 == 0:
+#             print("FizzBuzz")
+#         elif i%3 == 0:
+#             print("Fizz")
 #         elif i%5 == 0:
-#             print(f"{i}Buzz")
-#         elif i%3 == 0 and i%5 == 0:
-#             print(f"{i}FizzBuzz")
+#             print("Buzz")
+#
 #         else:
 #             print(i)
 #
@@ -114,13 +115,13 @@ def AskString():
 #         print(f"{i} bottles of age appropriate bottles on the wall")
 #
 #
-def task2_5():
-    print("task 5\n")
-    nbr = AskNumber()
-    for i in range(2, nbr // 2 + 1):
-        multiples = [j for j in range(nbr - 1, 1, -1) if j % i == 0]
-        if multiples:
-            print(multiples)
+# def task2_5():
+#     print("task 5\n")
+#     nbr = AskNumber()
+#     for i in range(2, nbr // 2 + 1):
+#         multiples = [j for j in range(nbr - 1, 1, -1) if j % i == 0]
+#         if multiples:
+#             print(multiples)
 
 
 # def task2_6():
