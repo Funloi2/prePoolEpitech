@@ -261,6 +261,10 @@ def task3_1():
         print("error")
 
 
-def task3_2():
-    print("task 2\n")
+def array_diff(a, b):
+    for i in a :
+        for j in b:
+            if i == j :
+                a.remove(i)
+    return a
 
