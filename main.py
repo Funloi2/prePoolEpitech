@@ -1,12 +1,6 @@
-import hangman
+import math
 
-def main():
-    hangman.printMenu()
-    choice = hangman.choiceMenu()
-    while choice != 2:
-        hangman.playGame()
-        hangman.printGameMenu()
-        choice = hangman.choiceMenu()
-    print("Goodbye!")
+import day8Task
 
-main()
+
+day8Task.task2_4()
