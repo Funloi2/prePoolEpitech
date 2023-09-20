@@ -1,6 +1,8 @@
-import math
-
-import day8Task
+import Game.main_frame as main_frame
 
 
-day8Task.task2_4()
+def main():
+    main_frame.frame()
+
+
+main()
