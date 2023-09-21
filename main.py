@@ -1,8 +1,8 @@
-import Game.main_frame as main_frame
-
+import hangman
+import test
 
 def main():
-    main_frame.frame()
-
+    hangman.playGame()
+     # test.test()
 
 main()

@@ -1,10 +1,12 @@
 import random
+from datetime import date
 
 wordList = ["hangman", "game", "python", "computer", "science", "programming", "mathematics", "player", "condition",
-        "reverse", "water", "board", "geeks"]
+            "reverse", "water", "board", "geeks"]
 
 dashWord = []
 score = 10
+
 
 def choiceMenu():
     while True:
@@ -22,62 +24,76 @@ def choiceMenu():
 def playGame():
     global score
     global dashWord
-    dashWord = []
     score = 10
-    word = random.choice(wordList)
+    word = random.choice(openFile())
     dashArray(word)
+    highScoreData = getHighScore(getScore("python"))
+    if highScoreData is None:
+        highScore = 0
+    else:
+        highScore = highScoreData[0][2]
     while True:
-        print(word)
         printDashWord()
         printScore(score)
         letter = askString()
-        if checkWord(letter, word):
-            print("You win!")
-            print("The word was: " + "".join(word))
-            print("\n")
+        if letter == word:
+            if score > int(highScore):
+                saveScore(word, score)
+                printNewHighScore(word, score)
+            else:
+                printWin(word, highScore)
             break
         elif letter in word:
             checkLetter(letter, word)
             if "_" not in dashWord:
-                print("You win!")
-                print("The word was: " + "".join(word))
-                print("\n")
+                printWin(word, highScore)
                 break
         else:
             score -= 1
             if score == 0:
-                print("You lose!")
-                print("The word was: " + "".join(word))
-                print("\n")
+                printLose(word)
                 break
     return None
-def printMenu():
-    print("Welcome to Hangman!")
-    print("1. Play Game")
-    print("2. Exit")
+
+
+def printNewHighScore(word, score):
+    print("You have a new high score!")
+    print("The word was: " + word)
+    print("You guessed the word in " + str(10-score) + " turns")
     print("\n")
 
 
-def printGameMenu():
-    print("1. Play Again")
-    print("2. Exit")
+def printWin(word, highScore):
+    print("You won!!")
+    print("The word was: " + "".join(word))
+    print("You guessed the word in " + str(10 - score) + " turns")
+    print("The high score for this word is: " + (10-highScore))
     print("\n")
+
+
+def printLose(word):
+    print("You lose!")
+    print("The word was: " + "".join(word))
+    print("\n")
+
+
+
 
 def askString():
     while True:
         try:
-            string = str(input("Enter a string: "))
+            string = str(input("Enter a word or a letter: "))
             if string == "":
-                print("Please enter a valid string")
+                print("Please enter a valid word or a valid letter")
                 continue
             else:
                 return string
         except ValueError:
-            print("Please enter a string")
+            print("Please enter a valid word or a valid letter")
 
 
 def dashArray(word):
-    for i in range(0, len(word)):
+    for i in range(0, len(word) - 1):
         dashWord.append("_")
     return None
 
@@ -87,12 +103,6 @@ def checkLetter(letter, word):
         if letter == word[i]:
             dashWord[i] = letter
     return None
-
-
-def checkWord(wordInput, word):
-    if wordInput == word:
-        return True
-    return False
 
 
 def printDashWord():
@@ -108,15 +118,56 @@ def printScore(score):
     return None
 
 
-def getLength(word):
-    return len(word)
+def openFile() -> list:
+    try:
+        wordListFile = []
+        with open('words.txt') as f:
+            while True:
+                line = f.readline()
+                if not line:
+                    break
+                wordListFile.append(line.strip())
+        return wordListFile
+    except FileNotFoundError:
+        print("File not found")
+        wordListFile = []
+        return wordListFile
 
 
-def printDash(word):
-    for i in range(0, len(word)):
-        print("_", end="")
-    print("\n")
+def getScore( word):
+    try:
+        listWordsScore = []
+        with open('score.txt', 'r') as f:
+            while True:
+                line = f.readline()
+                if not line:
+                    break
+                if line.strip().split("-")[0] == word:
+                    listWordsScore.append(line.strip().split("-"))
+        return listWordsScore
+    except FileNotFoundError:
+        print("File not found")
+        return None
 
 
-def printWord(word):
-    print(word)
+def getHighScore(listWordScore):
+    index = 0
+    if len(listWordScore) == 1 or listWordScore is None:
+        return listWordScore
+    else:
+        for i in listWordScore:
+            if i[2] > listWordScore[index][2]:
+                index = listWordScore.index(i)
+        return listWordScore[index]
+
+
+def saveScore(word, score):
+    try:
+        dateOfScore = date.today()
+        formatDate = dateOfScore.strftime("%d/%m/%Y")
+        with open('score.txt', 'a') as f:
+            f.write(word + "-" + formatDate + "-" + str(score) + "\n")
+    except FileNotFoundError:
+        print("File not found")
+        return None
+
