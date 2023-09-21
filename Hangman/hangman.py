@@ -121,7 +121,8 @@ def printScore(score):
 def openFile() -> list:
     try:
         wordListFile = []
-        with open('words.txt') as f:
+        print("1")
+        with open('Hangman/words.txt', 'r') as f:
             while True:
                 line = f.readline()
                 if not line:
@@ -137,7 +138,7 @@ def openFile() -> list:
 def getScore( word):
     try:
         listWordsScore = []
-        with open('score.txt', 'r') as f:
+        with open('Hangman/score.txt', 'r') as f:
             while True:
                 line = f.readline()
                 if not line:
@@ -165,7 +166,7 @@ def saveScore(word, score):
     try:
         dateOfScore = date.today()
         formatDate = dateOfScore.strftime("%d/%m/%Y")
-        with open('score.txt', 'a') as f:
+        with open('Hangman/score.txt', 'a') as f:
             f.write(word + "-" + formatDate + "-" + str(score) + "\n")
     except FileNotFoundError:
         print("File not found")
